@@ -1,0 +1,465 @@
+{
+	"info": {
+		"_postman_id": "complete-api-collection",
+		"name": "Complete API Collection - Web Galeri UKK",
+		"description": "Koleksi lengkap API untuk semua tabel: Petugas, Kategori, Posts, Photos, Galleries, Profiles, Messages",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Petugas API",
+			"item": [
+				{
+					"name": "Get All Petugas",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/petugas", "host": ["{{base_url}}"], "path": ["api", "petugas"]}
+					}
+				},
+				{
+					"name": "Get Petugas by ID",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/petugas/{{petugas_id}}", "host": ["{{base_url}}"], "path": ["api", "petugas", "{{petugas_id}}"]}
+					}
+				},
+				{
+					"name": "Create Petugas",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"petugas_baru\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/petugas", "host": ["{{base_url}}"], "path": ["api", "petugas"]}
+					}
+				},
+				{
+					"name": "Update Petugas (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"petugas_updated\",\n    \"password\": \"newpassword123\"\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/petugas/{{petugas_id}}", "host": ["{{base_url}}"], "path": ["api", "petugas", "{{petugas_id}}"]}
+					}
+				},
+				{
+					"name": "Delete Petugas",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/petugas/{{petugas_id}}", "host": ["{{base_url}}"], "path": ["api", "petugas", "{{petugas_id}}"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Messages API",
+			"item": [
+				{
+					"name": "Get All Messages",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/messages", "host": ["{{base_url}}"], "path": ["api", "messages"]}
+					}
+				},
+				{
+					"name": "Get Message by ID",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/messages/{{message_id}}", "host": ["{{base_url}}"], "path": ["api", "messages", "{{message_id}}"]}
+					}
+				},
+				{
+					"name": "Create Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"vida\",\n    \"email\": \"vida12@gmail.com\",\n    \"message\": \"mantap\",\n    \"status\": \"unread\"\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/messages", "host": ["{{base_url}}"], "path": ["api", "messages"]}
+					}
+				},
+				{
+					"name": "Update Message",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"wina\",\n    \"email\": \"gisnawina8@gmail.com\",\n    \"message\": \"keren\",\n    \"status\": \"read\"\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/messages/{{message_id}}", "host": ["{{base_url}}"], "path": ["api", "messages", "{{message_id}}"]}
+					}
+				},
+				{
+					"name": "Delete Message",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/messages/{{message_id}}", "host": ["{{base_url}}"], "path": ["api", "messages", "{{message_id}}"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Kategori API",
+			"item": [
+				{
+					"name": "Get All Kategori",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/kategori", "host": ["{{base_url}}"], "path": ["api", "kategori"]}
+					}
+				},
+				{
+					"name": "Get Kategori by ID",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/kategori/{{kategori_id}}", "host": ["{{base_url}}"], "path": ["api", "kategori", "{{kategori_id}}"]}
+					}
+				},
+				{
+					"name": "Create Kategori",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"judul\": \"Kategori Baru\"\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/kategori", "host": ["{{base_url}}"], "path": ["api", "kategori"]}
+					}
+				},
+				{
+					"name": "Update Kategori",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"judul\": \"Kategori Updated\"\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/kategori/{{kategori_id}}", "host": ["{{base_url}}"], "path": ["api", "kategori", "{{kategori_id}}"]}
+					}
+				},
+				{
+					"name": "Delete Kategori",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/kategori/{{kategori_id}}", "host": ["{{base_url}}"], "path": ["api", "kategori", "{{kategori_id}}"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Posts API",
+			"item": [
+				{
+					"name": "Get All Posts",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/posts", "host": ["{{base_url}}"], "path": ["api", "posts"]}
+					}
+				},
+				{
+					"name": "Get Post by ID",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/posts/{{post_id}}", "host": ["{{base_url}}"], "path": ["api", "posts", "{{post_id}}"]}
+					}
+				},
+				{
+					"name": "Create Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"judul\": \"Post Baru\",\n    \"isi\": \"Ini adalah isi post baru\",\n    \"kategori_id\": 1,\n    \"petugas_id\": 1,\n    \"status\": \"published\",\n    \"views\": 0\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/posts", "host": ["{{base_url}}"], "path": ["api", "posts"]}
+					}
+				},
+				{
+					"name": "Update Post",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"judul\": \"Post Updated\",\n    \"isi\": \"Ini adalah isi post yang diupdate\",\n    \"kategori_id\": 1,\n    \"petugas_id\": 1,\n    \"status\": \"published\",\n    \"views\": 10\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/posts/{{post_id}}", "host": ["{{base_url}}"], "path": ["api", "posts", "{{post_id}}"]}
+					}
+				},
+				{
+					"name": "Delete Post",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/posts/{{post_id}}", "host": ["{{base_url}}"], "path": ["api", "posts", "{{post_id}}"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Photos API",
+			"item": [
+				{
+					"name": "Get All Photos",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/photos", "host": ["{{base_url}}"], "path": ["api", "photos"]}
+					}
+				},
+				{
+					"name": "Get Photo by ID",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/photos/{{photo_id}}", "host": ["{{base_url}}"], "path": ["api", "photos", "{{photo_id}}"]}
+					}
+				},
+				{
+					"name": "Create Photo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"gallery_id\": 1,\n    \"file_path\": \"/images/photo1.jpg\",\n    \"judul\": \"Photo Baru\",\n    \"caption\": \"Ini adalah caption photo\"\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/photos", "host": ["{{base_url}}"], "path": ["api", "photos"]}
+					}
+				},
+				{
+					"name": "Update Photo",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"gallery_id\": 1,\n    \"file_path\": \"/images/photo1_updated.jpg\",\n    \"judul\": \"Photo Updated\",\n    \"caption\": \"Caption yang diupdate\"\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/photos/{{photo_id}}", "host": ["{{base_url}}"], "path": ["api", "photos", "{{photo_id}}"]}
+					}
+				},
+				{
+					"name": "Delete Photo",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/photos/{{photo_id}}", "host": ["{{base_url}}"], "path": ["api", "photos", "{{photo_id}}"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Galleries API",
+			"item": [
+				{
+					"name": "Get All Galleries",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/galleries", "host": ["{{base_url}}"], "path": ["api", "galleries"]}
+					}
+				},
+				{
+					"name": "Get Gallery by ID",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/galleries/{{gallery_id}}", "host": ["{{base_url}}"], "path": ["api", "galleries", "{{gallery_id}}"]}
+					}
+				},
+				{
+					"name": "Create Gallery",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"caption\": \"Gallery Baru\",\n    \"file_path\": \"/images/gallery1.jpg\",\n    \"post_id\": 1,\n    \"position\": 1,\n    \"status\": 1\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/galleries", "host": ["{{base_url}}"], "path": ["api", "galleries"]}
+					}
+				},
+				{
+					"name": "Update Gallery",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"caption\": \"Gallery Updated\",\n    \"file_path\": \"/images/gallery1_updated.jpg\",\n    \"post_id\": 1,\n    \"position\": 2,\n    \"status\": 1\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/galleries/{{gallery_id}}", "host": ["{{base_url}}"], "path": ["api", "galleries", "{{gallery_id}}"]}
+					}
+				},
+				{
+					"name": "Delete Gallery",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/galleries/{{gallery_id}}", "host": ["{{base_url}}"], "path": ["api", "galleries", "{{gallery_id}}"]}
+					}
+				}
+			]
+		},
+		{
+			"name": "Profiles API",
+			"item": [
+				{
+					"name": "Get All Profiles",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/profiles", "host": ["{{base_url}}"], "path": ["api", "profiles"]}
+					}
+				},
+				{
+					"name": "Get Profile by ID",
+					"request": {
+						"method": "GET",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/profiles/{{profile_id}}", "host": ["{{base_url}}"], "path": ["api", "profiles", "{{profile_id}}"]}
+					}
+				},
+				{
+					"name": "Create Profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"caption\": \"Profile Baru\",\n    \"file_path\": \"/images/profile1.jpg\",\n    \"post_id\": 1,\n    \"position\": 1,\n    \"status\": 1\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/profiles", "host": ["{{base_url}}"], "path": ["api", "profiles"]}
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Accept", "value": "application/json"},
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"caption\": \"Profile Updated\",\n    \"file_path\": \"/images/profile1_updated.jpg\",\n    \"post_id\": 1,\n    \"position\": 2,\n    \"status\": 1\n}"
+						},
+						"url": {"raw": "{{base_url}}/api/profiles/{{profile_id}}", "host": ["{{base_url}}"], "path": ["api", "profiles", "{{profile_id}}"]}
+					}
+				},
+				{
+					"name": "Delete Profile",
+					"request": {
+						"method": "DELETE",
+						"header": [{"key": "Accept", "value": "application/json"}],
+						"url": {"raw": "{{base_url}}/api/profiles/{{profile_id}}", "host": ["{{base_url}}"], "path": ["api", "profiles", "{{profile_id}}"]}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"description": "Base URL untuk API"
+		},
+		{
+			"key": "petugas_id",
+			"value": "1",
+			"description": "ID petugas untuk testing"
+		},
+		{
+			"key": "kategori_id",
+			"value": "1",
+			"description": "ID kategori untuk testing"
+		},
+		{
+			"key": "post_id",
+			"value": "1",
+			"description": "ID post untuk testing"
+		},
+		{
+			"key": "photo_id",
+			"value": "1",
+			"description": "ID photo untuk testing"
+		},
+		{
+			"key": "gallery_id",
+			"value": "1",
+			"description": "ID gallery untuk testing"
+		},
+		{
+			"key": "profile_id",
+			"value": "1",
+			"description": "ID profile untuk testing"
+		},
+		{
+			"key": "message_id",
+			"value": "1",
+			"description": "ID message untuk testing"
+		}
+	]
+}

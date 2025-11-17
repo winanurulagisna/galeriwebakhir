@@ -1,0 +1,516 @@
+{
+	"info": {
+		"_postman_id": "petugas-api-collection",
+		"name": "Petugas API Collection",
+		"description": "API Collection untuk CRUD operasi tabel Petugas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Petugas",
+			"item": [
+				{
+					"name": "Get All Petugas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/petugas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"petugas"
+							]
+						},
+						"description": "Mengambil semua data petugas"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/petugas",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"petugas"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Data petugas berhasil diambil\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"username\": \"admin\"\n        },\n        {\n            \"id\": 2,\n            \"username\": \"petugas1\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Petugas by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/petugas/{{petugas_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"petugas",
+								"{{petugas_id}}"
+							]
+						},
+						"description": "Mengambil data petugas berdasarkan ID"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/petugas/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"petugas",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Data petugas berhasil diambil\",\n    \"data\": {\n        \"id\": 1,\n        \"username\": \"admin\"\n    }\n}"
+						},
+						{
+							"name": "Not Found Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/petugas/999",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"petugas",
+										"999"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Petugas tidak ditemukan\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Petugas",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"petugas_baru\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/petugas",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"petugas"
+							]
+						},
+						"description": "Membuat petugas baru"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"petugas_baru\",\n    \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/petugas",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"petugas"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Petugas berhasil ditambahkan\",\n    \"data\": {\n        \"id\": 3,\n        \"username\": \"petugas_baru\"\n    }\n}"
+						},
+						{
+							"name": "Validation Error Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"\",\n    \"password\": \"123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/petugas",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"petugas"
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Validasi gagal\",\n    \"errors\": {\n        \"username\": [\n            \"Username wajib diisi\"\n        ],\n        \"password\": [\n            \"Password minimal 6 karakter\"\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Petugas (PUT)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"petugas_updated\",\n    \"password\": \"newpassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/petugas/{{petugas_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"petugas",
+								"{{petugas_id}}"
+							]
+						},
+						"description": "Mengupdate semua data petugas (PUT method)"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"petugas_updated\",\n    \"password\": \"newpassword123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/petugas/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"petugas",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Petugas berhasil diperbarui\",\n    \"data\": {\n        \"id\": 1,\n        \"username\": \"petugas_updated\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Petugas (PATCH)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"petugas_patched\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/petugas/{{petugas_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"petugas",
+								"{{petugas_id}}"
+							]
+						},
+						"description": "Mengupdate sebagian data petugas (PATCH method)"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"petugas_patched\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/api/petugas/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"petugas",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Petugas berhasil diperbarui\",\n    \"data\": {\n        \"id\": 1,\n        \"username\": \"petugas_patched\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Petugas",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/petugas/{{petugas_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"petugas",
+								"{{petugas_id}}"
+							]
+						},
+						"description": "Menghapus petugas berdasarkan ID"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/petugas/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"petugas",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Petugas berhasil dihapus\"\n}"
+						},
+						{
+							"name": "Not Found Response",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/petugas/999",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"petugas",
+										"999"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Petugas tidak ditemukan\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Koleksi endpoint untuk operasi CRUD pada tabel Petugas"
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"description": "Base URL untuk API"
+		},
+		{
+			"key": "petugas_id",
+			"value": "1",
+			"description": "ID petugas untuk testing"
+		}
+	]
+}

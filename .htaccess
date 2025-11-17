@@ -1,0 +1,40 @@
+# Enable modern image format support
+<IfModule mod_mime.c>
+    # HEIC/HEIF support (iPhone photos)
+    AddType image/heic .heic
+    AddType image/heif .heif
+    
+    # WebP support (Google format)
+    AddType image/webp .webp
+    
+    # AVIF support (next-gen format)
+    AddType image/avif .avif
+    
+    # Additional image formats
+    AddType image/bmp .bmp
+    AddType image/tiff .tiff .tif
+    AddType image/svg+xml .svg
+</IfModule>
+
+# Increase upload limits for large image files
+<IfModule mod_php.c>
+    php_value upload_max_filesize 50M
+    php_value post_max_size 50M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+    php_value memory_limit 256M
+</IfModule>
+
+# Enable compression for image files
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Set proper cache headers for images
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/heic "access plus 1 month"
+    ExpiresByType image/heif "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/avif "access plus 1 month"
+</IfModule>
