@@ -20,22 +20,25 @@ class UserProfileController extends Controller
         
         // Get statistics
         // Likes are tracked by user_id for logged in users
-        // Hitung likes unik (tanpa duplikat berita)
-        $allLikes = \App\Models\PhotoLike::where('user_id', $user->id)->get();
+        // Hitung likes unik (tanpa duplikat berita) - HANYA yang fotonya masih exist
+        $allLikes = \App\Models\PhotoLike::where('user_id', $user->id)
+            ->with('photo')
+            ->get();
+        
         $seenItems = [];
         $likesCount = $allLikes->filter(function($like) use (&$seenItems) {
-            $photo = \App\Models\Photo::find($like->photo_id);
+            // Skip if photo doesn't exist anymore
+            if (!$like->photo) {
+                return false;
+            }
             
-            // If not a photo, it's a post (berita)
-            if (!$photo) {
-                $uniqueKey = 'berita_' . $like->photo_id;
+            $photo = $like->photo;
+            
+            // For berita photos, use berita ID as unique key
+            if (($photo->related_type ?? null) === 'berita' && $photo->related_id) {
+                $uniqueKey = 'berita_' . $photo->related_id;
             } else {
-                // For berita photos, use berita ID as unique key
-                if (($photo->related_type ?? null) === 'berita' && $photo->related_id) {
-                    $uniqueKey = 'berita_' . $photo->related_id;
-                } else {
-                    $uniqueKey = 'photo_' . $photo->id;
-                }
+                $uniqueKey = 'photo_' . $photo->id;
             }
             
             if (isset($seenItems[$uniqueKey])) {
