@@ -126,22 +126,6 @@
                         <div id="likes-grid" class="contents">
                             <!-- Photos loaded via AJAX -->
                         </div>
-                        
-                        <!-- Berita Cards -->
-                        @if($likedPosts && $likedPosts->count() > 0)
-                            @foreach($likedPosts as $post)
-                                @if($post->image)
-                                <a href="{{ route('berita.show', $post) }}" class="block aspect-square rounded overflow-hidden relative group">
-                                    <img src="{{ $post->image }}" alt="{{ $post->judul }}" class="w-full h-full object-cover">
-                                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-200 flex items-end">
-                                        <div class="p-2 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                            <p class="text-xs font-semibold line-clamp-2">{{ $post->judul }}</p>
-                                        </div>
-                                    </div>
-                                </a>
-                                @endif
-                            @endforeach
-                        @endif
                     </div>
                     
                     <div id="likes-loading" class="text-center py-8 hidden">
