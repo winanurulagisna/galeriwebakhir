@@ -4,25 +4,23 @@
 
 @section('content')
 <!-- Hero Slider -->
-<div class="relative overflow-hidden">
+<div class="relative overflow-hidden" style="position: relative; z-index: 1;">
     <div class="hero-slider-container" id="heroSlider">
         <!-- Slider images will be populated by JavaScript -->
     </div>
     
     <!-- Slider Controls -->
-    <button class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition duration-300 z-10" onclick="changeSlide(-1)">
+    <button class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition duration-300" style="z-index: 100;" onclick="changeSlide(-1)">
         <i class="fas fa-chevron-left"></i>
     </button>
-    <button class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition duration-300 z-10" onclick="changeSlide(1)">
+    <button class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition duration-300" style="z-index: 100;" onclick="changeSlide(1)">
         <i class="fas fa-chevron-right"></i>
     </button>
     
     <!-- Slider Indicators -->
-    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10" id="sliderIndicators">
+    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2" style="z-index: 100;" id="sliderIndicators">
         <!-- Indicators will be populated by JavaScript -->
     </div>
-    
-    
 </div>
 
 <!-- Main Content -->
@@ -60,6 +58,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </section>
     
     <!-- Fasilitas Sekolah Section -->
@@ -133,6 +132,7 @@
             <div id="galleryGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"></div>
             <div class="mt-6 text-left mb-2">
                 <a href="{{ route('gallery.index') }}" class="load-more-btn">Lihat Selengkapnya</a>
+            </div>
         </div>
     </section>
 
@@ -758,7 +758,7 @@
             subtitle: 'Suasana Pembelajaran yang Kondusif'
         },
         {
-            url: '/images/halaman3.JPG',
+            url: '/images/halaman3.jpg',
             title: 'Ekstrakurikuler Unggulan',
             subtitle: 'Mengembangkan Bakat dan Minat Siswa'
         },
@@ -1924,7 +1924,7 @@ document.addEventListener('keydown', function(e) {
 </script>
 
 <!-- News Detail Modal -->
-<div id="newsModal" class="fixed inset-0 z-50 hidden">
+<div id="newsModal" class="fixed inset-0 z-50 hidden" style="display: none;">
   <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeNewsModal()"></div>
   <div class="relative z-10 max-w-4xl mx-auto my-16 md:my-20 px-4">
     <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">

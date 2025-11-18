@@ -62,7 +62,7 @@
         
         <!-- Logo & Header -->
         <div class="flex items-center justify-center h-14 bg-blue-600 text-white">
-            <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-2 hover:text-white/90">
+            <a href="{{ url('/admin') }}" class="flex items-center space-x-2 hover:text-white/90">
                 <i class="fas fa-school text-lg"></i>
                 <span class="text-base font-bold">SMKN 4 BOGOR</span>
             </a>
@@ -72,8 +72,8 @@
         <nav class="mt-4 px-3">
             <div class="space-y-1">
                 <!-- Dashboard -->
-                <a href="{{ route('admin.dashboard') }}" 
-                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-blue-50 text-blue-600' : '' }}">
+                <a href="{{ url('/admin') }}" 
+                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->is('admin') || request()->is('admin/index.php') ? 'bg-blue-50 text-blue-600' : '' }}">
                     <i class="fas fa-tachometer-alt w-4 h-4 mr-2"></i>
                     <span>Dashboard</span>
                 </a>
@@ -161,7 +161,7 @@
                 
                 <!-- Page Title (clickable to Dashboard) -->
                 <div class="flex items-center">
-                    <a href="{{ route('admin.dashboard') }}" class="text-lg font-bold text-gray-900 hover:text-blue-600 transition-colors">
+                    <a href="{{ url('/admin') }}" class="text-lg font-bold text-gray-900 hover:text-blue-600 transition-colors">
                         @yield('page-title', 'Dashboard')
                     </a>
                 </div>

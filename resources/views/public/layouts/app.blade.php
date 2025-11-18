@@ -25,9 +25,19 @@
              height: 280px;
              position: relative;
              overflow: hidden;
+             background: linear-gradient(135deg, #1e5a78 0%, #0d3d56 100%);
+             display: flex;
+             align-items: center;
+             justify-content: center;
          }
          .slider-image {
              transition: opacity 1s ease-in-out;
+             position: absolute;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             z-index: 1;
          }
          .slider-overlay {
              background: rgba(0, 0, 0, 0.4);
