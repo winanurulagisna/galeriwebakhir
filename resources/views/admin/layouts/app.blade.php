@@ -84,15 +84,15 @@
                 </div>
 
                 <!-- Halaman Berita Terkini -->
-                <a href="{{ route('admin.berita.index') }}" 
-                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.berita*') ? 'bg-blue-50 text-blue-600' : '' }}">
+                <a href="{{ url('/admin/pages/berita.php') }}" 
+                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->is('admin/pages/berita.php') ? 'bg-blue-50 text-blue-600' : '' }}">
                     <i class="fas fa-newspaper w-4 h-4 mr-2"></i>
                     <span>Halaman Berita Terkini</span>
                 </a>
 
                 <!-- Agenda -->
-                <a href="{{ route('admin.agenda.index') }}" 
-                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.agenda*') ? 'bg-blue-50 text-blue-600' : '' }}">
+                <a href="{{ url('/admin/pages/agenda.php') }}" 
+                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->is('admin/pages/agenda.php') ? 'bg-blue-50 text-blue-600' : '' }}">
                     <i class="fas fa-calendar-alt w-4 h-4 mr-2"></i>
                     <span>Agenda</span>
                 </a>
@@ -103,8 +103,8 @@
                 </div>
 
                 <!-- Halaman Galeri -->
-                <a href="{{ route('admin.galeri.index') }}" 
-                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.galeri*') ? 'bg-blue-50 text-blue-600' : '' }}">
+                <a href="{{ url('/admin/pages/galeri.php') }}" 
+                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->is('admin/pages/galeri.php') ? 'bg-blue-50 text-blue-600' : '' }}">
                     <i class="fas fa-images w-4 h-4 mr-2"></i>
                     <span>Halaman Galeri</span>
                 </a>
@@ -115,35 +115,32 @@
                 </div>
 
                 <!-- Pesan -->
-                <a href="{{ route('admin.pesan.index') }}" 
-                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.pesan*') ? 'bg-blue-50 text-blue-600' : '' }}">
+                <a href="{{ url('/admin/pages/pesan.php') }}" 
+                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->is('admin/pages/pesan.php') ? 'bg-blue-50 text-blue-600' : '' }}">
                     <i class="fas fa-envelope w-4 h-4 mr-2"></i>
                     <span>Pesan</span>
                 </a>
 
                 <!-- Komentar Foto -->
-                <a href="{{ route('admin.komentar.index') }}" 
-                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.komentar*') ? 'bg-blue-50 text-blue-600' : '' }}">
+                <a href="{{ url('/admin/pages/komentar_foto.php') }}" 
+                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->is('admin/pages/komentar_foto.php') ? 'bg-blue-50 text-blue-600' : '' }}">
                     <i class="fas fa-comments w-4 h-4 mr-2"></i>
                     <span>Komentar Foto</span>
                 </a>
 
                 <!-- Pengaturan Akun -->
-                <a href="{{ route('admin.profile.index') }}" 
-                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->routeIs('admin.profile*') ? 'bg-blue-50 text-blue-600' : '' }}">
+                <a href="{{ url('/admin/pages/profile.php') }}" 
+                   class="flex items-center px-3 py-2 text-sm text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition-colors {{ request()->is('admin/pages/profile.php') ? 'bg-blue-50 text-blue-600' : '' }}">
                     <i class="fas fa-user-cog w-4 h-4 mr-2"></i>
                     <span>Pengaturan Akun</span>
                 </a>
 
                 <!-- Logout -->
-                <form method="POST" action="{{ route('admin.logout') }}" class="mt-3">
-                    @csrf
-                    <button type="submit" 
-                            class="w-full flex items-center px-3 py-2 text-sm text-red-600 rounded-lg hover:bg-red-50 transition-colors">
-                        <i class="fas fa-sign-out-alt w-4 h-4 mr-2"></i>
-                        <span>Logout</span>
-                    </button>
-                </form>
+                <a href="{{ url('/logout.php') }}" 
+                   class="flex items-center px-3 py-2 text-sm text-red-600 rounded-lg hover:bg-red-50 transition-colors mt-3">
+                    <i class="fas fa-sign-out-alt w-4 h-4 mr-2"></i>
+                    <span>Logout</span>
+                </a>
             </div>
         </nav>
     </div>
