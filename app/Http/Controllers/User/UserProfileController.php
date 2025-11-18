@@ -150,17 +150,40 @@ class UserProfileController extends Controller
                 ->get();
         }
         
-        // Get liked posts (berita) - hanya kategori "Berita Terkini" (kategori_id = 1)
-        $likedPosts = \App\Models\PostLike::where('user_id', $user->id)
+        // Get liked posts (berita) - deduplicate berita using same logic as getLikedPhotos
+        $allLikedBerita = \App\Models\PhotoLike::where('user_id', $user->id)
+            ->with('photo')
             ->orderBy('created_at', 'desc')
-            ->limit(6)
-            ->get()
-            ->map(function($like) {
-                $post = \App\Models\Post::find($like->photo_id);
-                // Filter hanya Berita Terkini (kategori_id = 1)
-                return ($post && $post->kategori_id == 1) ? $post : null;
-            })
-            ->filter(); // Remove nulls
+            ->get();
+        
+        // Filter untuk berita saja dan remove duplicates
+        $seenBerita = [];
+        $likedPosts = $allLikedBerita->filter(function($like) use (&$seenBerita) {
+            // Get the photo
+            if (!$like->photo) return false;
+            
+            // Only process berita photos
+            if ($like->photo->related_type === 'berita' && $like->photo->related_id) {
+                $beritaId = $like->photo->related_id;
+                
+                // Skip if already seen
+                if (isset($seenBerita[$beritaId])) {
+                    return false;
+                }
+                
+                $seenBerita[$beritaId] = true;
+                return true;
+            }
+            
+            return false;
+        })
+        ->take(6)
+        ->map(function($like) {
+            $post = \App\Models\Post::find($like->photo->related_id);
+            // Filter hanya Berita Terkini (kategori_id = 1)
+            return ($post && $post->kategori_id == 1) ? $post : null;
+        })
+        ->filter(); // Remove nulls
         
         // Get commented posts (berita) - hanya kategori "Berita Terkini"
         $commentedPosts = \App\Models\PostComment::where('user_id', $user->id)
