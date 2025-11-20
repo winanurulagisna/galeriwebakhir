@@ -12,27 +12,31 @@
     <!-- Category Filter Tabs -->
     <div class="category-filter-container">
         <div class="category-filter">
-            <button class="filter-btn active" data-category="all">
+            <a href="{{ route('gallery.index') }}" class="filter-btn {{ empty($selectedCategory) ? 'active' : '' }}" data-category="all">
                 <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
                 </svg>
                 <span>Semua Galeri</span>
                 <span class="filter-count" id="count-all">0</span>
-            </button>
-            <button class="filter-btn" data-category="Kegiatan Sekolah">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
-                </svg>
-                <span>Kegiatan Sekolah</span>
-                <span class="filter-count" id="count-Kegiatan-Sekolah">0</span>
-            </button>
-            <button class="filter-btn" data-category="Ekstrakulikuler">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
-                </svg>
-                <span>Ekstrakurikuler</span>
-                <span class="filter-count" id="count-Ekstrakulikuler">0</span>
-            </button>
+            </a>
+
+            @if(isset($categories) && $categories->count())
+                @foreach($categories as $category)
+                    @php
+                        $isActive = isset($selectedCategory) && $selectedCategory === $category->judul;
+                        $normalizedId = Str::slug($category->judul, '-');
+                    @endphp
+                    <a href="{{ route('gallery.index', ['category' => $category->judul]) }}"
+                       class="filter-btn {{ $isActive ? 'active' : '' }}"
+                       data-category="{{ $category->judul }}">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>{{ $category->judul }}</span>
+                        <span class="filter-count" id="count-{{ $normalizedId }}">0</span>
+                    </a>
+                @endforeach
+            @endif
         </div>
     </div>
     @if(isset($albums) && $albums->count())
@@ -608,26 +612,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Count cards per category
     function updateCounts() {
-        const counts = {
-            all: 0,
-            'Kegiatan Sekolah': 0,
-            'Ekstrakulikuler': 0,
-            'Berita Sekolah': 0,
-            general: 0
-        };
-        
+        const counts = {};
+        counts['all'] = 0;
+
         galleryCards.forEach(card => {
             const category = card.getAttribute('data-category');
             counts.all++;
-            // Count by exact category name
-            if (counts[category] !== undefined) {
-                counts[category]++;
+            if (!counts[category]) {
+                counts[category] = 0;
             }
+            counts[category]++;
         });
         
         // Update count displays with normalized IDs
         Object.keys(counts).forEach(cat => {
-            const normalizedCat = cat.replace(/\s+/g, '-');
+            const normalizedCat = cat === 'all' ? 'all' : cat.toLowerCase().replace(/\s+/g, '-');
             const countEl = document.getElementById(`count-${normalizedCat}`);
             if (countEl) {
                 countEl.textContent = counts[cat];
@@ -637,27 +636,34 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Filter functionality
     filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
             const category = this.getAttribute('data-category');
-            
-            // Update active state
-            filterBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Filter cards with animation
-            galleryCards.forEach((card, index) => {
-                const cardCategory = card.getAttribute('data-category');
-                
-                if (category === 'all' || cardCategory === category) {
-                    card.classList.remove('hidden');
-                    card.style.animation = 'none';
-                    setTimeout(() => {
-                        card.style.animation = `cardFadeInUp 0.6s ease-out ${0.1 * index}s forwards`;
-                    }, 10);
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
+
+            // If this is the "all" button or a specific category button, we still
+            // apply client-side filter for smooth UX. The server-side filter is
+            // handled via the href on each link.
+            if (category) {
+                e.preventDefault();
+
+                // Update active state
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                // Filter cards with animation
+                galleryCards.forEach((card, index) => {
+                    const cardCategory = card.getAttribute('data-category');
+                    
+                    if (category === 'all' || cardCategory === category) {
+                        card.classList.remove('hidden');
+                        card.style.animation = 'none';
+                        setTimeout(() => {
+                            card.style.animation = `cardFadeInUp 0.6s ease-out ${0.1 * index}s forwards`;
+                        }, 10);
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            }
         });
     });
     

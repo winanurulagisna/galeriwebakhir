@@ -33,10 +33,10 @@
             <form method="POST" action="{{ route('login') }}" class="space-y-6">
                 @csrf
 
-                <!-- Email Field -->
+                <!-- Email/Username Field -->
                 <div>
                     <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
-                        Email
+                        Email atau Username
                     </label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -44,9 +44,9 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
                         </div>
-                        <input id="email" name="email" type="email" value="{{ old('email') }}" required autofocus
+                        <input id="email" name="email" type="text" value="{{ old('email') }}" required autofocus
                             class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all @error('email') border-red-500 @enderror"
-                            placeholder="email@contoh.com">
+                            placeholder="email@contoh.com atau username">
                     </div>
                     @error('email')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

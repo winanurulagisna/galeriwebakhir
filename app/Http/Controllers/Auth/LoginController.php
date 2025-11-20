@@ -23,17 +23,20 @@ class LoginController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['required'],
             'password' => ['required'],
         ], [
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
+            'email.required' => 'Email atau username wajib diisi.',
             'password.required' => 'Password wajib diisi.',
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+        // Check if input is email or username
+        $field = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $credentials = [$field => $request->email, 'password' => $request->password];
+
+        if (!Auth::attempt($credentials, $request->boolean('remember'))) {
             throw ValidationException::withMessages([
-                'email' => 'Email atau password salah.',
+                'email' => 'Email/username atau password salah.',
             ]);
         }
 

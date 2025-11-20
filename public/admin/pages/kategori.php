@@ -119,6 +119,10 @@ if ($res) { while ($r = $res->fetch_assoc()) { $rows[] = $r; } $res->close(); }
 <div class="card">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
         <h3>Kategori</h3>
+        <!-- Tombol Tambah Kategori -->
+        <a href="?page=kategori&create=1" class="btn" style="background:#10b981; padding:8px 16px; font-size:14px;">
+            Tambah Kategori
+        </a>
     </div>
     <table style="width:100%; border-collapse:collapse; margin-top:16px;">
         <thead>
@@ -151,7 +155,24 @@ if ($res) { while ($r = $res->fetch_assoc()) { $rows[] = $r; } $res->close(); }
     </table>
 </div>
 
-
+<!-- Form Tambah Kategori -->
+<?php if (isset($_GET['create'])): ?>
+<div class="card" style="margin-top:12px;">
+    <h3>Tambah Kategori Baru</h3>
+    <form method="post" action="?page=kategori">
+        <input type="hidden" name="action" value="create">
+        <div style="margin-bottom:16px;">
+            <label style="display:block; margin-bottom:6px; font-weight:600; color:#374151;">Nama Kategori *</label>
+            <input type="text" name="judul" required maxlength="100" style="width:100%; padding:12px; border:2px solid #d1d5db; border-radius:8px; font-size:14px; transition:border-color 0.2s;" placeholder="Masukkan nama kategori">
+            <small style="color:#6b7280; font-size:12px;">Nama kategori tidak boleh duplikat</small>
+        </div>
+        <div style="display:flex; gap:8px;">
+            <button class="btn" type="submit" style="background:#10b981;">Simpan</button>
+            <a href="?page=kategori" class="btn" style="background:#6b7280;">Batal</a>
+        </div>
+    </form>
+</div>
+<?php endif; ?>
 
 <?php if (isset($_GET['edit'])): 
     $editId = (int) $_GET['edit'];
@@ -185,5 +206,3 @@ if ($res) { while ($r = $res->fetch_assoc()) { $rows[] = $r; } $res->close(); }
     <?php endif; ?>
 </div>
 <?php endif; ?>
-
-

@@ -19,41 +19,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($username === '' || $password === '') {
         $error = 'Username dan password wajib diisi';
     } else {
-        // Prepare statement to avoid SQL injection
-        $stmt = $mysqli->prepare('SELECT id, username, password FROM petugas WHERE username = ? LIMIT 1');
-        if (!$stmt) {
-            $error = 'Kesalahan server';
+        // Check if username exists in both petugas and users tables
+        $stmt1 = $mysqli->prepare('SELECT COUNT(*) as count FROM petugas WHERE username = ?');
+        $stmt1->bind_param('s', $username);
+        $stmt1->execute();
+        $result1 = $stmt1->get_result();
+        $row1 = $result1->fetch_assoc();
+        $petugasCount = (int) $row1['count'];
+        $stmt1->close();
+
+        $stmt2 = $mysqli->prepare('SELECT COUNT(*) as count FROM users WHERE username = ?');
+        $stmt2->bind_param('s', $username);
+        $stmt2->execute();
+        $result2 = $stmt2->get_result();
+        $row2 = $result2->fetch_assoc();
+        $usersCount = (int) $row2['count'];
+        $stmt2->close();
+
+        // If username exists in users table, prevent login
+        if ($usersCount > 0) {
+            $error = 'Username ini sudah digunakan oleh user. Silakan gunakan username lain.';
+        } else if ($petugasCount == 0) {
+            $error = 'Username tidak ditemukan';
         } else {
-            $stmt->bind_param('s', $username);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $user = $result ? $result->fetch_assoc() : null;
-            $stmt->close();
-
-            if (!$user) {
-                $error = 'Username tidak ditemukan';
+            // Prepare statement to avoid SQL injection
+            $stmt = $mysqli->prepare('SELECT id, username, password FROM petugas WHERE username = ? LIMIT 1');
+            if (!$stmt) {
+                $error = 'Kesalahan server';
             } else {
-                $storedHashOrPlain = (string) $user['password'];
-                $isBcrypt = str_starts_with($storedHashOrPlain, '$2y$') || str_starts_with($storedHashOrPlain, '$2a$');
+                $stmt->bind_param('s', $username);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $user = $result ? $result->fetch_assoc() : null;
+                $stmt->close();
 
-                $passwordOk = false;
-                if ($isBcrypt) {
-                    $passwordOk = password_verify($password, $storedHashOrPlain);
+                if (!$user) {
+                    $error = 'Username tidak ditemukan';
                 } else {
-                    // fallback plain text comparison
-                    $passwordOk = hash_equals($storedHashOrPlain, $password);
-                }
+                    $storedHashOrPlain = (string) $user['password'];
+                    $isBcrypt = str_starts_with($storedHashOrPlain, '$2y$') || str_starts_with($storedHashOrPlain, '$2a$');
 
-                if ($passwordOk) {
-                    // Regenerate session id to prevent fixation
-                    session_regenerate_id(true);
-                    $_SESSION['petugas_id'] = (int) $user['id'];
-                    $_SESSION['petugas_username'] = (string) $user['username'];
+                    $passwordOk = false;
+                    if ($isBcrypt) {
+                        $passwordOk = password_verify($password, $storedHashOrPlain);
+                    } else {
+                        // fallback plain text comparison
+                        $passwordOk = hash_equals($storedHashOrPlain, $password);
+                    }
 
-                    header('Location: admin/index.php');
-                    exit;
-                } else {
-                    $error = 'Password salah';
+                    if ($passwordOk) {
+                        // Regenerate session id to prevent fixation
+                        session_regenerate_id(true);
+                        $_SESSION['petugas_id'] = (int) $user['id'];
+                        $_SESSION['petugas_username'] = (string) $user['username'];
+
+                        header('Location: admin/index.php');
+                        exit;
+                    } else {
+                        $error = 'Password salah';
+                    }
                 }
             }
         }

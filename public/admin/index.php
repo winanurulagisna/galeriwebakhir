@@ -312,6 +312,7 @@ if (isset($mysqli) && $mysqli) {
                 <!-- Manajemen & Laporan -->
                 <div class="nav-section">Manajemen & Laporan</div>
                 <a href="?page=petugas" class="<?php echo $page==='petugas'?'active':''; ?>">Petugas</a>
+                <a href="?page=users" class="<?php echo $page==='users'?'active':''; ?>">Users</a>
                 <a href="?page=komentar_foto" class="<?php echo $page==='komentar_foto'?'active':''; ?>">Komentar Foto</a>
                 <a href="?page=downloads" class="<?php echo $page==='downloads'?'active':''; ?>">Unduhan Foto</a>
                 <a href="?page=pesan" class="<?php echo $page==='pesan'?'active':''; ?>">
@@ -376,6 +377,9 @@ if (isset($mysqli) && $mysqli) {
                         break;
                     case 'petugas':
                         require __DIR__ . '/pages/petugas.php';
+                        break;
+                    case 'users':
+                        require __DIR__ . '/pages/users.php';
                         break;
                     case 'komentar_foto':
                         require __DIR__ . '/pages/komentar_foto.php';

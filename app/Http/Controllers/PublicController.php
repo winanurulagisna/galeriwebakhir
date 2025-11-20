@@ -196,9 +196,14 @@ class PublicController extends Controller
      */
     public function gallery(Request $request)
     {
-        // Get category filter from request (optional)
+        // Get category filter from request (optional, by category name from kategori_new)
         $categoryFilter = $request->get('category');
-        
+
+        // Load categories for filter tabs, exclude Agenda Sekolah & Berita Sekolah
+        $categories = Category::whereNotIn('judul', ['Agenda Sekolah', 'Berita Sekolah'])
+            ->orderBy('judul')
+            ->get();
+
         // Unified album list including Ekstrakulikuler and Kegiatan Sekolah
         // Note: 'Berita Sekolah' category removed from gallery - berita now has its own page at /berita
         $query = Gallery::with(['photos'])
@@ -209,14 +214,7 @@ class PublicController extends Controller
         
         // Apply category filter if provided (for direct URL access)
         if ($categoryFilter) {
-            $categoryMap = [
-                'acara' => 'Kegiatan Sekolah',
-                'kegiatan' => 'Kegiatan Sekolah',
-                'ekstrakurikuler' => 'Ekstrakulikuler',
-                'berita' => 'Berita Sekolah'
-            ];
-            $dbCategory = $categoryMap[$categoryFilter] ?? $categoryFilter;
-            $query->where('category', $dbCategory);
+            $query->where('category', $categoryFilter);
         }
         
         $albums = $query->orderBy('title')->get();
@@ -248,6 +246,8 @@ class PublicController extends Controller
             'albums' => $albums,
             'acaraCover' => $acaraCover,
             'acaraGallery' => $acaraGallery,
+            'categories' => $categories,
+            'selectedCategory' => $categoryFilter,
         ]);
     }
 

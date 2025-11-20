@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules;
 
 class RegisterController extends Controller
@@ -27,10 +28,17 @@ class RegisterController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'username' => ['nullable', 'string', 'max:255', 'unique:users', function ($attribute, $value, $fail) {
+                // Check if username exists in petugas table
+                if ($value && DB::table('petugas')->where('username', $value)->exists()) {
+                    $fail('Username ini sudah digunakan oleh admin. Silakan pilih username lain.');
+                }
+            }],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', 'min:8'],
         ], [
             'name.required' => 'Nama wajib diisi.',
+            'username.unique' => 'Username sudah digunakan.',
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah terdaftar.',
@@ -43,13 +51,20 @@ class RegisterController extends Controller
         $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
         
         // Create user with OTP
-        $user = User::create([
+        $userData = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'otp_code' => $otp,
             'otp_expires_at' => now()->addMinutes(10), // OTP valid 10 menit
-        ]);
+        ];
+        
+        // Add username if provided
+        if ($request->username) {
+            $userData['username'] = $request->username;
+        }
+        
+        $user = User::create($userData);
 
         // Fire Registered event (triggers email with OTP)
         event(new Registered($user));

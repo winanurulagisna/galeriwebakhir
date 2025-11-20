@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
 
 class UserProfileController extends Controller
@@ -21,15 +23,22 @@ class UserProfileController extends Controller
         // Get statistics
         // Likes are tracked by user_id for logged in users
         // Hitung likes unik (tanpa duplikat berita) - HANYA yang fotonya masih exist
-        $allLikes = \App\Models\PhotoLike::where('user_id', $user->id)
+        $allPhotoLikes = \App\Models\PhotoLike::where('user_id', $user->id)
             ->with('photo')
             ->get();
         
+        // Get all post likes
+        $allPostLikes = \App\Models\PostLike::where('user_id', $user->id)
+            ->with('post')
+            ->get();
+        
         $seenItems = [];
-        $likesCount = $allLikes->filter(function($like) use (&$seenItems) {
+        
+        // Process photo likes
+        foreach ($allPhotoLikes as $like) {
             // Skip if photo doesn't exist anymore
             if (!$like->photo) {
-                return false;
+                continue;
             }
             
             $photo = $like->photo;
@@ -41,21 +50,31 @@ class UserProfileController extends Controller
                 $uniqueKey = 'photo_' . $photo->id;
             }
             
-            if (isset($seenItems[$uniqueKey])) {
-                return false; // Skip duplicate
-            }
             $seenItems[$uniqueKey] = true;
-            return true;
-        })->count();
+        }
+        
+        // Process post likes
+        foreach ($allPostLikes as $like) {
+            // Skip if post doesn't exist anymore
+            if (!$like->post) {
+                continue;
+            }
+            
+            // For posts, use post ID as unique key
+            $uniqueKey = 'berita_' . $like->post->id;
+            $seenItems[$uniqueKey] = true;
+        }
+        
+        $likesCount = count($seenItems);
             
         // Comments are tracked in both database and JSON file
         $commentsCount = 0;
         
         // Count from database - komentar untuk foto yang masih ada (tanpa filter gallery status)
         try {
-            if (\Schema::hasTable('photo_comments')) {
+            if (Schema::hasTable('photo_comments')) {
                 // Count photo comments - semua foto yang masih ada
-                $photoCommentsCount = \DB::table('photo_comments')
+                $photoCommentsCount = DB::table('photo_comments')
                     ->join('photos', 'photo_comments.photo_id', '=', 'photos.id')
                     ->where('photo_comments.user_id', $user->id)
                     ->where('photo_comments.comment_type', 'photo') // Only photo comments
@@ -63,7 +82,7 @@ class UserProfileController extends Controller
                     ->count();
                     
                 // Count komentar untuk berita (PostComment menggunakan photo_comments table dengan photo_id = post_id)
-                $postCommentsCount = \DB::table('photo_comments')
+                $postCommentsCount = DB::table('photo_comments')
                     ->join('posts_new', 'photo_comments.photo_id', '=', 'posts_new.id')
                     ->where('photo_comments.user_id', $user->id)
                     ->where('photo_comments.comment_type', 'post') // Only post comments
@@ -91,7 +110,7 @@ class UserProfileController extends Controller
                     }
                     
                     // Pastikan foto masih ada (tanpa filter gallery status)
-                    $photoExists = \DB::table('photos')
+                    $photoExists = DB::table('photos')
                         ->where('photos.id', $comment['photo_id'])
                         ->exists();
                     
@@ -106,7 +125,7 @@ class UserProfileController extends Controller
         // Downloads are tracked in database
         $downloadsCount = 0;
         try {
-            if (\Schema::hasTable('photo_downloads')) {
+            if (Schema::hasTable('photo_downloads')) {
                 // Count all download records for this user
                 $downloadsCount = \App\Models\PhotoDownload::where('user_id', $user->id)
                     ->whereHas('photo') // Only count if photo still exists

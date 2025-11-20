@@ -19,7 +19,6 @@ use App\Http\Controllers\PhotoDownloadController;
 use App\Http\Controllers\User\UserActivityController;
 use App\Http\Controllers\User\UserProfileController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -92,6 +91,11 @@ Route::get('/test-csrf', function () {
         'session_id' => session()->getId(),
         'session_driver' => config('session.driver')
     ]);
+});
+
+// Test registration form
+Route::get('/test-register', function () {
+    return view('auth.register');
 });
 
 // Admin Routes disabled - moved to public/admin PHP dashboard

@@ -5,12 +5,14 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Photo;
 use App\Models\PhotoLike;
+use App\Models\PostLike;
 use App\Models\PhotoDownload;
 use App\Models\PhotoComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class UserActivityController extends Controller
 {
@@ -67,19 +69,28 @@ class UserActivityController extends Controller
         $page = $request->get('page', 1);
         $perPage = 12;
         
-        // Get ALL likes first (no pagination yet)
-        $allLikesRaw = PhotoLike::where('user_id', $user->id)
+        // Get ALL photo likes first (no pagination yet)
+        $photoLikesRaw = PhotoLike::where('user_id', $user->id)
             ->with('photo')
             ->orderBy('created_at', 'desc')
             ->get();
         
-        // Filter duplicates BEFORE pagination
+        // Get ALL post likes
+        $postLikesRaw = PostLike::where('user_id', $user->id)
+            ->with('post')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        // Combine and filter duplicates BEFORE pagination
         // For berita photos: group by related_id (one berita = one entry)
         // For gallery photos: group by photo_id
         $seenItems = [];
-        $allLikesUnique = $allLikesRaw->filter(function($like) use (&$seenItems) {
+        $allLikesUnique = collect();
+        
+        // Process photo likes
+        foreach ($photoLikesRaw as $like) {
             if (!$like->photo) {
-                return false; // Skip if photo doesn't exist
+                continue; // Skip if photo doesn't exist
             }
             
             // If this is a berita photo, use related_id as unique key
@@ -92,12 +103,38 @@ class UserActivityController extends Controller
             
             // Skip if already seen
             if (isset($seenItems[$uniqueKey])) {
-                return false;
+                continue;
             }
             
             $seenItems[$uniqueKey] = true;
-            return true;
-        })->values();
+            $allLikesUnique->push($like);
+        }
+        
+        // Process post likes
+        foreach ($postLikesRaw as $like) {
+            if (!$like->post) {
+                continue; // Skip if post doesn't exist
+            }
+            
+            // For posts, use post_id as unique key
+            $uniqueKey = 'berita_' . $like->post->id;
+            
+            // Skip if already seen
+            if (isset($seenItems[$uniqueKey])) {
+                continue;
+            }
+            
+            $seenItems[$uniqueKey] = true;
+            // Create a mock PhotoLike object for the post
+            $mockLike = new \stdClass();
+            $mockLike->photo_id = $like->post->id;
+            $mockLike->photo = $like->post;
+            $mockLike->created_at = $like->created_at;
+            $allLikesUnique->push($mockLike);
+        }
+        
+        // Sort by created_at descending
+        $allLikesUnique = $allLikesUnique->sortByDesc('created_at')->values();
         
         // Manual pagination after filtering
         $total = $allLikesUnique->count();
@@ -196,7 +233,7 @@ class UserActivityController extends Controller
             ->where('status', 'approved')
             ->where('comment_type', 'photo') // Only photo comments
             ->whereExists(function($query) {
-                $query->select(\DB::raw(1))
+                $query->select(DB::raw(1))
                       ->from('photos')
                       ->whereColumn('photos.id', 'photo_comments.photo_id');
             })
@@ -213,7 +250,7 @@ class UserActivityController extends Controller
             ->where('status', 'approved')
             ->where('comment_type', 'post') // Only post comments
             ->whereExists(function($query) {
-                $query->select(\DB::raw(1))
+                $query->select(DB::raw(1))
                       ->from('posts_new')
                       ->whereColumn('posts_new.id', 'photo_comments.photo_id')
                       ->where('posts_new.status', 'published');
@@ -405,8 +442,8 @@ class UserActivityController extends Controller
             return $downloadedPhotos;
             
         } catch (\Exception $e) {
-            \Log::error('Error in getDownloadedPhotos: ' . $e->getMessage());
-            \Log::error($e->getTraceAsString());
+            Log::error('Error in getDownloadedPhotos: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
             
             if ($request->ajax()) {
                 return response()->json([
