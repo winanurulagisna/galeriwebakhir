@@ -460,8 +460,8 @@ if (isset($mysqli) && $mysqli) {
                         if ($q = $mysqli->query("SELECT COUNT(*) AS c FROM posts_new p INNER JOIN kategori_new k ON k.id=p.kategori_id WHERE p.status='published' AND (k.judul LIKE '%berita%' OR k.judul LIKE '%news%' OR k.judul LIKE '%terkini%')")) { $row=$q->fetch_assoc(); $beritaCount=(int)($row['c']??0); $q->close(); }
                         // Acara Sekolah: jumlah foto bertipe 'acara' pada galeri kategori 'acara sekolah' (selaras dengan halaman publik acara)
                         if ($q = $mysqli->query("SELECT COUNT(*) AS c FROM photos f INNER JOIN galleries g ON g.id=f.gallery_id WHERE f.related_type='acara' AND (g.status IN ('active','published') OR g.status=0) AND g.category='acara sekolah'")) { $row=$q->fetch_assoc(); $acaraCount=(int)($row['c']??0); $q->close(); }
-                        // Galeri: status in ('active','published') OR status=0, category NOT 'berita', exclude placeholder titles (selaras dengan publik)
-                        if ($q = $mysqli->query("SELECT COUNT(*) AS c FROM galleries WHERE (status IN ('active','published') OR status=0) AND category NOT IN ('berita') AND title NOT IN ('Acara Sekolah','Album Acara Sekolah','Clasmeet','Classmeet')")) { $row=$q->fetch_assoc(); $galeriCount=(int)($row['c']??0); $q->close(); }
+                        // Galeri Sekolah: hanya album kategori non-berita dengan status 'published'
+                        if ($q = $mysqli->query("SELECT COUNT(*) AS c FROM galleries WHERE category NOT IN ('berita', 'Berita Sekolah') AND status='published'")) { $row=$q->fetch_assoc(); $galeriCount=(int)($row['c']??0); $q->close(); }
                         // Agenda: total agenda from agenda table
                         if (tableExists($mysqli, 'agenda')) {
                             if ($q = $mysqli->query('SELECT COUNT(*) AS c FROM agenda')) { $row=$q->fetch_assoc(); $agendaCount=(int)($row['c']??0); $q->close(); }

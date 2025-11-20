@@ -208,7 +208,7 @@ class PublicController extends Controller
         // Note: 'Berita Sekolah' category removed from gallery - berita now has its own page at /berita
         $query = Gallery::with(['photos'])
             ->where('status', 'published')
-            ->whereNotIn('category', ['Berita Sekolah', 'berita'])
+            ->whereNotIn('category', ['Berita Sekolah', 'berita', 'Agenda Sekolah', 'agenda sekolah'])
             // Hide unwanted/placeholder albums from public grid
             ->whereNotIn('title', ['Acara Sekolah', 'Album Acara Sekolah', 'Clasmeet', 'Classmeet', 'Berita Terkini']);
         
